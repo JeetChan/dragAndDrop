@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace dragAndDrop
@@ -76,13 +76,62 @@ namespace dragAndDrop
                     && hittest.RowIndex != -1)
                 {
                     dataGridView1[hittest.ColumnIndex, hittest.RowIndex].Value = oldValue + "\r\n" + cellvalue;
+                    dataGridView1[hittest.ColumnIndex, hittest.RowIndex].Tag = oldValue + "\r\n" + cellvalue;
                 }
 
 
             }
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
 
 
+            List<string> list = new List<string>(_max);
+            list.Add("one");
+            list.Add("two");
+            list.Add("three");
+            list.Add("four");
+            list.Add("five");
+
+
+            var s1 = Stopwatch.StartNew();
+            for (int i = 0; i < _max; i++)
+            {
+                bool f = ContainsLoop(list, "four");
+            }
+            s1.Stop();
+            var s2 = Stopwatch.StartNew();
+            for (int i = 0; i < _max; i++)
+            {
+                bool f = list.Contains("four");
+            }
+            s2.Stop();
+            Console.WriteLine(((double)(s1.Elapsed.TotalMilliseconds * 1000000) /
+                _max).ToString("0.00 ns"));
+            Console.WriteLine(((double)(s2.Elapsed.TotalMilliseconds * 1000000) /
+                _max).ToString("0.00 ns"));
+            Console.Read();
+        }
+
+        private const int _max = 100000000;
+
+        private bool ContainsLoop(List<string> list, string value)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (value.Equals(list[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form3 f3 = new Form3();
+            f3.Show(this);
+        }
     }
 }
